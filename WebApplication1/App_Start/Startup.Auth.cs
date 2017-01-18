@@ -46,13 +46,11 @@ namespace WebApplication1
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
-            KeySecret ksTwitter = new KeySecret("TwitterOAuth");
-
             app.UseTwitterAuthentication(new Microsoft.Owin.Security.Twitter.TwitterAuthenticationOptions
-            {            
-                ConsumerKey = ksTwitter.Key,
-                ConsumerSecret = ksTwitter.Secret,
-                BackchannelCertificateValidator = new Microsoft.Owin.Security.CertificateSubjectKeyIdentifierValidator(new []
+            {
+                ConsumerKey = "wjoRLZz08oRVh0eUTQRsLdHx4",
+                ConsumerSecret = "CKH9b9p7Sp23xWRbwKq4ndVt9ux185PC5zIBHXfAcrPUFNtZz7",
+                BackchannelCertificateValidator = new Microsoft.Owin.Security.CertificateSubjectKeyIdentifierValidator(new[]
                 {
                     "A5EF0B11CEC04103A34A659048B21CE0572D7D47", // VeriSign Class 3 Secure Server CA - G2
                     "0D445C165344C1827E1D20AB25F40163D8BE79A5", // VeriSign Class 3 Secure Server CA - G3
@@ -65,27 +63,21 @@ namespace WebApplication1
                 })
             });
 
-            KeySecret ksFacebook = new KeySecret("FacebookOAuth");
-
             app.UseFacebookAuthentication(
-                appId: ksFacebook.Key,
-                appSecret: ksFacebook.Secret
+                appId: "750116155146163",
+                appSecret: "0a92f94be1df55fc3a71ceaf507156d2"
             );
-
-            KeySecret ksGoogle = new KeySecret("GoogleOAuth");
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = ksGoogle.Key,
-                ClientSecret = ksGoogle.Secret
+                ClientId = "398924250366-6mm31kcs1ejut87jvof6q20isosuqhn1.apps.googleusercontent.com",
+                ClientSecret = "W2VZejZP4I-RQi2AC0pobpG-"
             });
-
-            KeySecret ksYahoo = new KeySecret("YahooOAuth");
 
             app.UseYahooAuthentication(new YahooAuthenticationOptions()
             {
-                ConsumerKey = ksYahoo.Key,
-                ConsumerSecret = ksYahoo.Secret
+                ConsumerKey = "dj0yJmk9M0RLV1pLWnF2TU1VJmQ9WVdrOWFsRllRa0Z2TlRnbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD05Zg--",
+                ConsumerSecret = "3aaf3d797e872fabbbb1503b0394695bc62e89de"
             });
         }
 
