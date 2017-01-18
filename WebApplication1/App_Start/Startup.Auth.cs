@@ -46,20 +46,12 @@ namespace WebApplication1
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
-            // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
-
-            //app.UseTwitterAuthentication(
-            //    consumerKey: "wjoRLZz08oRVh0eUTQRsLdHx4",
-            //    consumerSecret: "CKH9b9p7Sp23xWRbwKq4ndVt9ux185PC5zIBHXfAcrPUFNtZz7"
-            //);
+            KeySecret ksTwitter = new KeySecret("TwitterOAuth");
 
             app.UseTwitterAuthentication(new Microsoft.Owin.Security.Twitter.TwitterAuthenticationOptions
-            {
-                ConsumerKey = "wjoRLZz08oRVh0eUTQRsLdHx4",
-                ConsumerSecret = "CKH9b9p7Sp23xWRbwKq4ndVt9ux185PC5zIBHXfAcrPUFNtZz7",
+            {            
+                ConsumerKey = ksTwitter.Key,
+                ConsumerSecret = ksTwitter.Secret,
                 BackchannelCertificateValidator = new Microsoft.Owin.Security.CertificateSubjectKeyIdentifierValidator(new []
                 {
                     "A5EF0B11CEC04103A34A659048B21CE0572D7D47", // VeriSign Class 3 Secure Server CA - G2
@@ -73,22 +65,46 @@ namespace WebApplication1
                 })
             });
 
+            KeySecret ksFacebook = new KeySecret("FacebookOAuth");
+
             app.UseFacebookAuthentication(
-                appId: "104263480082805",
-                appSecret: "531a0c6009f04702f137ba59d25e4a32"
+                appId: ksFacebook.Key,
+                appSecret: ksFacebook.Secret
             );
+
+            KeySecret ksGoogle = new KeySecret("GoogleOAuth");
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "398924250366-6mm31kcs1ejut87jvof6q20isosuqhn1.apps.googleusercontent.com",
-                ClientSecret = "W2VZejZP4I-RQi2AC0pobpG-"
+                ClientId = ksGoogle.Key,
+                ClientSecret = ksGoogle.Secret
             });
-                        
+
+            KeySecret ksYahoo = new KeySecret("YahooOAuth");
+
             app.UseYahooAuthentication(new YahooAuthenticationOptions()
             {
-                ConsumerKey = "dj0yJmk9M0RLV1pLWnF2TU1VJmQ9WVdrOWFsRllRa0Z2TlRnbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD05Zg--",
-                ConsumerSecret = "3aaf3d797e872fabbbb1503b0394695bc62e89de"
+                ConsumerKey = ksYahoo.Key,
+                ConsumerSecret = ksYahoo.Secret
             });
+        }
+
+        partial class KeySecret
+        {
+            void GetConfigValue(String key)
+            {
+                String[] values = System.Configuration.ConfigurationManager.AppSettings[key].Split(';');
+
+                Key = values[0];
+                Secret = values[1];
+            }
+
+            public KeySecret (String key) {
+                GetConfigValue(key);
+            }
+
+            public String Key { get; set; }
+            public String Secret { get; set; }
         }
     }
 }
